@@ -15,7 +15,7 @@
     'data': [
         'views/account_journal.xml',
         'views/account_payment.xml',
-        #'views/sale_order.xml',
+        'views/sale_order.xml',
     ],
     'demo': [
     ],
