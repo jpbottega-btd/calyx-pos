@@ -42,11 +42,12 @@ odoo.define('pos_electronic_qr_receipt', function (require) {
 							     model: 'account.move',
 							     method: 'search_read',
 							     args: [[['id', '=', account_move]], ['afip_auth_code',
-							                                        'afip_qr_code',
+							                                        'afip_qr_code', 'afip_auth_code_due'
 							                                        ]],
 							}).then(function (invoices) {
 							    self.receipt_data['order']['afip_auth_code'] = invoices[0]['afip_auth_code'];
 							    self.receipt_data['order']['afip_qr_code'] = invoices[0]['afip_qr_code'];
+							    self.receipt_data['order']['afip_auth_code_due'] = new Date(invoices[0]['afip_auth_code_due']).toLocaleString('es-AR');
 							});
                         }
                     }
@@ -69,7 +70,7 @@ odoo.define('pos_electronic_qr_receipt', function (require) {
                     domain: [['pos_reference', '=', order['name']]],
                     fields: ['account_move']
                 }).then(function (orders) {
-                    if (orders.length > 0 && orders[0]['account_move'] && orders[0]['account_move'][1]) {       
+                    if (orders.length > 0 && orders[0]['account_move'] && orders[0]['account_move'][1]) {
                         var account_move = orders[0]['account_move'][0];
                         var invoice_number = orders[0]['account_move'][1];
                         self.pos.get_order()['invoice_number'] = invoice_number;
@@ -77,11 +78,12 @@ odoo.define('pos_electronic_qr_receipt', function (require) {
 						     model: 'account.move',
 						     method: 'search_read',
 						     args: [[['id', '=', account_move]], ['afip_auth_code',
-						                                        'afip_qr_code',
+						                                        'afip_qr_code', 'afip_auth_code_due',
 						                                        ]],
 						}).then(function (invoices) {
 						    self.pos.get_order()['afip_auth_code'] = invoices[0]['afip_auth_code'];
 					        self.pos.get_order()['afip_qr_code'] = invoices[0]['afip_qr_code'];
+					        self.pos.get_order()['afip_auth_code_due'] = new Date(invoices[0]['afip_auth_code_due']).toLocaleString('es-AR');
 							self.$('.pos-receipt-container').html(qweb.render('OrderReceipt', self.get_receipt_render_env()));
 						});
                     }
