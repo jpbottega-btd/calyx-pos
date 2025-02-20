@@ -36,8 +36,10 @@ odoo.define('pos_electronic_qr_receipt', function (require) {
                         if (orders[0]['account_move']) {
 							var account_move = orders[0]['account_move'][0];
                             var invoice_number = orders[0]['account_move'][1];
-                            console.log(self.receipt_data['order']['invoice_number'])
-                            self.receipt_data['order']['invoice_number'] = invoice_number;
+                            var match = invoice_number.match(/^[^(]+/);
+                            var invoice_number_trim = match ? match[0].trim() : '';
+                            // var invoice_number_trim = invoice_number.replace(/\s*\(.*?\)\s*/g, '').trim();
+                            self.receipt_data['order']['invoice_number'] = invoice_number_trim;
                             rpc.query({
 							     model: 'account.move',
 							     method: 'search_read',
@@ -73,7 +75,10 @@ odoo.define('pos_electronic_qr_receipt', function (require) {
                     if (orders.length > 0 && orders[0]['account_move'] && orders[0]['account_move'][1]) {
                         var account_move = orders[0]['account_move'][0];
                         var invoice_number = orders[0]['account_move'][1];
-                        self.pos.get_order()['invoice_number'] = invoice_number;
+                        var match = invoice_number.match(/^[^(]+/);
+                        var invoice_number_trim = match ? match[0].trim() : '';
+                        // var invoice_number_trim = invoice_number.replace(/\s*\(.*?\)\s*/g, '').trim();
+                        self.pos.get_order()['invoice_number'] = invoice_number_trim;
                         rpc.query({
 						     model: 'account.move',
 						     method: 'search_read',
