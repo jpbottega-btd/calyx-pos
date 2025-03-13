@@ -36,7 +36,7 @@ odoo.define('pos_electronic_qr_receipt', function (require) {
                         if (orders[0]['account_move']) {
 							var account_move = orders[0]['account_move'][0];
                             var invoice_number = orders[0]['account_move'][1];
-                            var match = invoice_number.match(/^[^(]+/);
+                            var match = invoice_number?.match(/^[^(]+/);
                             var invoice_number_trim = match ? match[0].trim() : '';
                             // var invoice_number_trim = invoice_number.replace(/\s*\(.*?\)\s*/g, '').trim();
                             self.receipt_data['order']['invoice_number'] = invoice_number_trim;
@@ -48,7 +48,7 @@ odoo.define('pos_electronic_qr_receipt', function (require) {
 							                                        ]],
 							}).then(function (invoices) {
 
-                                nro_doc = invoices[0]['l10n_latam_document_type_id'][1].match(/\d+/)[0];
+                                nro_doc = invoices[0]['l10n_latam_document_type_id'][1]?.match(/\d+/)[0] || '-';
                                 self.receipt_data['order']['document_type_code'] = '(Cod. ' + nro_doc + ')';
 							    self.receipt_data['order']['afip_auth_code'] = invoices[0]['afip_auth_code'];
 							    self.receipt_data['order']['afip_qr_code'] = invoices[0]['afip_qr_code'];
@@ -78,7 +78,7 @@ odoo.define('pos_electronic_qr_receipt', function (require) {
                     if (orders.length > 0 && orders[0]['account_move'] && orders[0]['account_move'][1]) {
                         var account_move = orders[0]['account_move'][0];
                         var invoice_number = orders[0]['account_move'][1];
-                        var match = invoice_number.match(/^[^(]+/);
+                        var match = invoice_number?.match(/^[^(]+/);
                         var invoice_number_trim = match ? match[0].trim() : '';
                         // var invoice_number_trim = invoice_number.replace(/\s*\(.*?\)\s*/g, '').trim();
                         self.pos.get_order()['invoice_number'] = invoice_number_trim;
@@ -89,7 +89,7 @@ odoo.define('pos_electronic_qr_receipt', function (require) {
 						                                        'afip_qr_code', 'afip_auth_code_due', 'l10n_latam_document_type_id'
 						                                        ]],
 						}).then(function (invoices) {
-                            nro_doc = invoices[0]['l10n_latam_document_type_id'][1].match(/\d+/)[0];
+                            nro_doc = invoices[0]['l10n_latam_document_type_id'][1]?.match(/\d+/)[0] || '-';
                             self.pos.get_order()['document_type_code'] = '(Cod. ' + nro_doc + ')';
 						    self.pos.get_order()['afip_auth_code'] = invoices[0]['afip_auth_code'];
 					        self.pos.get_order()['afip_qr_code'] = invoices[0]['afip_qr_code'];
