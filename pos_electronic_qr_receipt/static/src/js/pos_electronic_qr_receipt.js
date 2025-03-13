@@ -48,8 +48,8 @@ odoo.define('pos_electronic_qr_receipt', function (require) {
 							                                        ]],
 							}).then(function (invoices) {
 
-                                nro_doc = invoices[0]['l10n_latam_document_type_id'][1].match(/\(\d+\)/);
-                                self.receipt_data['order']['document_type_code'] = nro_doc;
+                                nro_doc = invoices[0]['l10n_latam_document_type_id'][1].match(/\d+/)[0];
+                                self.receipt_data['order']['document_type_code'] = '(Cod. ' + nro_doc + ')';
 							    self.receipt_data['order']['afip_auth_code'] = invoices[0]['afip_auth_code'];
 							    self.receipt_data['order']['afip_qr_code'] = invoices[0]['afip_qr_code'];
 							    self.receipt_data['order']['afip_auth_code_due'] = new Date(invoices[0]['afip_auth_code_due']).toLocaleString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -89,8 +89,8 @@ odoo.define('pos_electronic_qr_receipt', function (require) {
 						                                        'afip_qr_code', 'afip_auth_code_due', 'l10n_latam_document_type_id'
 						                                        ]],
 						}).then(function (invoices) {
-                            nro_doc = invoices[0]['l10n_latam_document_type_id'][1].match(/\(\d+\)/);
-                            self.pos.get_order()['document_type_code'] = nro_doc;
+                            nro_doc = invoices[0]['l10n_latam_document_type_id'][1].match(/\d+/)[0];
+                            self.pos.get_order()['document_type_code'] = '(Cod. ' + nro_doc + ')';
 						    self.pos.get_order()['afip_auth_code'] = invoices[0]['afip_auth_code'];
 					        self.pos.get_order()['afip_qr_code'] = invoices[0]['afip_qr_code'];
 					        self.pos.get_order()['afip_auth_code_due'] = new Date(invoices[0]['afip_auth_code_due']).toLocaleString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
